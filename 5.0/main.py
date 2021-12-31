@@ -29,6 +29,10 @@ run_speed = 100
 
 plane = 0,0
 
+margin_forward = 20
+margin_side = 10
+
+
 class robot():
 
     def run(speed, heading, turn_speed, degrees): #speed in mm/s
