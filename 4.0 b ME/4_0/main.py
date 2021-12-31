@@ -9,8 +9,7 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 
 from pybricks.iodevices import Ev3devSensor
 import time
-import threading
-
+import math
 
 ev3 = EV3Brick()
 
@@ -34,6 +33,8 @@ class robot():
 
     def run(speed, heading, turn_speed, degrees): #speed in mm/s
 
+        global plane
+
         ###
         heading = heading * -1 #invert heading
 
@@ -53,12 +54,14 @@ class robot():
         m1 = m1 + turn_speed #if any turn speed is needed it adds it so it moves while turning
         m2 = m2 + turn_speed
         m3 = m3 + turn_speed
+        ###
 
         back.run(m1) #runs the motors
         lm.run(m2)
         rm.run(m3)
-        ###
- 
+
+
+        heading = heading * -1
 
         ##
         if heading + degrees > 359:
@@ -69,27 +72,20 @@ class robot():
 
         ###
         if heading == 90: #####plotting the y and x of the robot in mm
-            place = (speed, 0)
+            plane = plane[0],plane[1] + speed
 
         elif heading == 180:
-            place = (0, speed * -1)
+            plane = plane[0] = speed * -1,plane[1]
 
         elif heading == 270:
-            place = (speed * -1, 0)
+            plane = plane[0],plane[1] + speed * -1
 
         else:
-            place = (place[0] + (speed * math.cos(math.radians(heading))), place[1] + (speed * math.sin(math.radians(heading))))
-
-        place = int(round(place[0])),int(round(place[1])) #rounds the y and x value
-
-        
+            plane = (plane[0] + (speed * math.cos(math.radians(heading))), plane[1] + (speed * math.sin(math.radians(heading))))
 
 
+        plane = int(round(plane[0])),int(round(plane[1])) #rounds the y and x value
 
-
-
-        print(place)
-        ###
 
 
 
@@ -181,8 +177,5 @@ while True:
         if ball == "(9,)":
             robot.drive(max_speed,120,0,degrees)
 
-
-
     else:
         robot.drive(0,0,360)
-
