@@ -1,6 +1,8 @@
 import time
 import math
 
+start = time.time()
+
 a1 = 180           #90    #0
 a2 = 60            #210  #120
 a3 = 300           #330 #240
@@ -59,12 +61,24 @@ def run(speed, heading, turn_speed, degrees): #speed in mm/s
 
         plane = int(round(plane[0])),int(round(plane[1])) #rounds the y and x value
 
+        
+
         print("lm: " + str(m2))
         print("rm: " + str(m3))
         print("bm: " + str(m1))
 
-        print("plane: " + str(plane))
+        print("plane: " + str(plane[0]/10000),str(plane[1]/10000)) #to calculate the division number, take the raw (probably close to 200000) from 1 measured point to another, then divide the raw by the actual distance to get the number to input here
         print("")
 
-for i in range(20):
-    run(100,0,0,0)
+timeout = 10
+
+timout_start = time.time()
+while time.time() < timout_start + timeout:
+    if time.time() < timout_start + timeout - 5:
+        run(100,0,0,0)
+    else:
+        run(-100,0,0,0)
+
+end = time.time()
+
+print(end - start)
