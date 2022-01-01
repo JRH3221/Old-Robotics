@@ -29,8 +29,8 @@ run_speed = 100
 
 plane = 0,0
 
-margin_forward = 20
-margin_side = 10
+margin_y = 20 #from start to forward goal
+margin_x = 10 # from start to the right
 
 
 class robot():
@@ -98,86 +98,109 @@ while True:
     #DC has no filtering and will pick up anything
     degrees = int(compass('DC'))
     ball = str(ir.read("AC"))
-    if ball != "(0,)":
 
-        if degrees > 350 and degrees < 10:
-            if ball == "(1,)" or ball == "(9,":
-                robot.drive(run_speed,180,0,degrees)
-            elif ball == "(2,)":
-                robot.drive(run_speed,240,0,degrees)
-            elif ball == "(3,)":
-                robot.drive(run_speed,270,0,degrees)
-            elif ball == "(4,)":
-                robot.drive(run_speed,300,0,degrees)
-            elif ball == "(5,)":
+    if plane[0] < (margin_y - 20) and plane[1] < (margin_x - 20) and plane[1] > (margin_x * -1) + 20:
+
+        if ball != "(0,)":
+
+            if degrees > 350 and degrees < 10:
+                if ball == "(1,)" or ball == "(9,":
+                    robot.drive(run_speed,180,0,degrees)
+                elif ball == "(2,)":
+                    robot.drive(run_speed,240,0,degrees)
+                elif ball == "(3,)":
+                    robot.drive(run_speed,270,0,degrees)
+                elif ball == "(4,)":
+                    robot.drive(run_speed,300,0,degrees)
+                elif ball == "(5,)":
+                    robot.drive(max_speed,0,0,degrees)
+                elif ball == "(6,)":
+                    robot.drive(run_speed,60,0,degrees)
+                elif ball == "(7,)":
+                    robot.drive(run_speed,90,0,degrees)
+                elif ball == "(8,)":
+                    robot.drive(run_speed,120,0,degrees)
+
+            elif degrees > 180:
+                #rotate clockwise
+                if ball == "(1,)" or ball == "(9,":
+                    robot.drive(run_speed,180,0,degrees)
+                elif ball == "(2,)":
+                    robot.drive(run_speed,240,45,degrees)
+                elif ball == "(3,)":
+                    robot.drive(run_speed,90,45,degrees)
+                elif ball == "(4,)":
+                    robot.drive(run_speed,90,45,degrees)
+                elif ball == "(5,)":
+                    robot.drive(run_speed,315,45,degrees)
+                elif ball == "(6,)":
+                    robot.drive(run_speed,0,degrees,degrees)
+                elif ball == "(7,)":
+                    robot.drive(run_speed,0,degrees,degrees)
+                elif ball == "(8,)":
+                    robot.drive(run_speed,120,45,degrees)
+    
+            else:
+                #rotate anticlockwise
+                if ball == "(1,)" or ball == "(9,":
+                    robot.drive(run_speed,180,0,degrees)  
+                elif ball == "(2,)":
+                    robot.drive(run_speed,240,-45,degrees)
+                elif ball == "(3,)":
+                    robot.drive(run_speed,0,degrees *-1,degrees)
+                elif ball == "(4,)":
+                    robot.drive(run_speed,0,degrees *-1,degrees)
+                elif ball == "(5,)":
+                    robot.drive(run_speed,45,-45,degrees)
+                elif ball == "(6,)":
+                    robot.drive(run_speed,90,-45,degrees)
+                elif ball == "(7,)":
+                    robot.drive(run_speed,90,-45,degrees)
+                elif ball == "(8,)":
+                    robot.drive(run_speed,120,-45,degrees)
+
+        elif str(ir.read("DC")) != "(0,)": ##DC detect lower latency move straight towards ball unaccounting for rotation and current position on the field
+            print("DC detect")
+            if ball == "(1,)":
+                #240
+                robot.drive(max_speed,240,0,degrees)
+            if ball == "(2,)":
+                #270
+                robot.drive(max_speed,270,0,degrees)
+            if ball == "(3,)":
+                robot.drive(max_speed,300,0,degrees)
+            if ball == "(4,)":
+                robot.drive(max_speed,330,0,degrees)
+            if ball == "(5,)":
                 robot.drive(max_speed,0,0,degrees)
-            elif ball == "(6,)":
-                robot.drive(run_speed,60,0,degrees)
-            elif ball == "(7,)":
-                robot.drive(run_speed,90,0,degrees)
-            elif ball == "(8,)":
-                robot.drive(run_speed,120,0,degrees)
+            if ball == "(6,)":
+                robot.drive(max_speed,30,0,degrees)
+            if ball == "(7,)":
+                robot.drive(max_speed,60,0,degrees)
+            if ball == "(8,)":
+                robot.dribr(max_speed,90,0,degrees)
+            if ball == "(9,)":
+                robot.drive(max_speed,120,0,degrees)
 
-        elif degrees > 180:
-            #rotate clockwise
-            if ball == "(1,)" or ball == "(9,":
-                robot.drive(run_speed,180,0,degrees)
-            elif ball == "(2,)":
-                robot.drive(run_speed,240,45,degrees)
-            elif ball == "(3,)":
-                robot.drive(run_speed,90,45,degrees)
-            elif ball == "(4,)":
-                robot.drive(run_speed,90,45,degrees)
-            elif ball == "(5,)":
-                robot.drive(run_speed,315,45,degrees)
-            elif ball == "(6,)":
-                robot.drive(run_speed,0,degrees,degrees)
-            elif ball == "(7,)":
-                robot.drive(run_speed,0,degrees,degrees)
-            elif ball == "(8,)":
-                robot.drive(run_speed,120,45,degrees)
-   
         else:
-            #rotate anticlockwise
-            if ball == "(1,)" or ball == "(9,":
-                robot.drive(run_speed,180,0,degrees)  
-            elif ball == "(2,)":
-                robot.drive(run_speed,240,-45,degrees)
-            elif ball == "(3,)":
-                robot.drive(run_speed,0,degrees *-1,degrees)
-            elif ball == "(4,)":
-                robot.drive(run_speed,0,degrees *-1,degrees)
-            elif ball == "(5,)":
-                robot.drive(run_speed,45,-45,degrees)
-            elif ball == "(6,)":
-                robot.drive(run_speed,90,-45,degrees)
-            elif ball == "(7,)":
-                robot.drive(run_speed,90,-45,degrees)
-            elif ball == "(8,)":
-                robot.drive(run_speed,120,-45,degrees)
+            robot.drive(0,0,360)
+    elif plane[0] >= margin_y + 20:
+        ## place holder
+        # this means the robot is close to the front bounderies
+        back.stop()
+        lm.stop()
+        rm.stop()
 
-    elif str(ir.read("DC")) != "(0,)": ##DC detect lower latency move straight towards ball unaccounting for rotation and current position on the field
-        print("DC detect")
-        if ball == "(1,)":
-            #240
-            robot.drive(max_speed,240,0,degrees)
-        if ball == "(2,)":
-            #270
-            robot.drive(max_speed,270,0,degrees)
-        if ball == "(3,)":
-            robot.drive(max_speed,300,0,degrees)
-        if ball == "(4,)":
-            robot.drive(max_speed,330,0,degrees)
-        if ball == "(5,)":
-            robot.drive(max_speed,0,0,degrees)
-        if ball == "(6,)":
-            robot.drive(max_speed,30,0,degrees)
-        if ball == "(7,)":
-            robot.drive(max_speed,60,0,degrees)
-        if ball == "(8,)":
-            robot.dribr(max_speed,90,0,degrees)
-        if ball == "(9,)":
-            robot.drive(max_speed,120,0,degrees)
+    elif plane[1] >= margin_x + 20:
+        ## place holder
+        # this means the robot is close to the right side of the pitch
+        back.stop()
+        lm.stop()
+        rm.stop()
 
     else:
-        robot.drive(0,0,360)
+        ## place holder
+        # this means the robot is close to the left of the pitch
+        back.stop()
+        lm.stop()
+        rm.stop()
