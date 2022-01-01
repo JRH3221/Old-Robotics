@@ -27,8 +27,6 @@ a3 = 300           #330 #240
 max_speed = 200
 run_speed = 100
 
-plane = 0,0
-
 class robot():
 
     def run(speed, heading, turn_speed, degrees): #speed in mm/s
@@ -59,34 +57,6 @@ class robot():
         back.run(m1) #runs the motors
         lm.run(m2)
         rm.run(m3)
-
-
-        heading = heading * -1
-
-        ##
-        if heading + degrees > 359:
-            heading = (heading + degrees) - 360 #accounts for the robots rotation
-        else:
-            heading = heading + degrees
-        ##
-
-        ###
-        if heading == 90: #####plotting the y and x of the robot in mm
-            plane = plane[0],plane[1] + speed
-
-        elif heading == 180:
-            plane = plane[0] = speed * -1,plane[1]
-
-        elif heading == 270:
-            plane = plane[0],plane[1] + speed * -1
-
-        else:
-            plane = (plane[0] + (speed * math.cos(math.radians(heading))), plane[1] + (speed * math.sin(math.radians(heading))))
-
-
-        plane = int(round(plane[0])),int(round(plane[1])) #rounds the y and x value
-
-
 
 
 while True:
