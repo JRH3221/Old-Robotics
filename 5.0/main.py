@@ -32,6 +32,25 @@ plane = 0,0
 margin_y = 20 #from start to forward goal
 margin_x = 10 # from start to the right
 
+ev3.screen.print("On")
+
+def reset():
+    global plane
+
+    lm.stop()
+    rm.stop()
+    back.stop()
+
+    plane = 0,0
+
+    time.sleep(1)
+    resetting = True
+    while resetting:
+        if str(ev3.buttons.pressed()) == "CENTER":
+            resetting = False
+            ev3.speaker.beep()
+            break
+
 
 class robot():
 
@@ -98,6 +117,14 @@ while True:
     #DC has no filtering and will pick up anything
     degrees = int(compass('DC'))
     ball = str(ir.read("AC"))
+
+    if str(ev3.buttons.pressed()) == "CENTER":
+        ev3.speaker.beep()
+        ev3.screen.print("Off")
+        reset()
+        ev3.screen.print("On")
+        
+
 
     if plane[0] < (margin_y - 20) and plane[1] < (margin_x - 20) and plane[1] > (margin_x * -1) + 20:
 
