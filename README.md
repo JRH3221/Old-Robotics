@@ -1,8 +1,4 @@
-# Astraea-Robot
+# Robotics
 
-No code should be shared without permission.
-
-No code should be used without credit given.
-
-No responsibilty is on the creator of the code should there be issues and regulations with using the shared code.
+All code is free for use and editing. There are multiple branches with different code programs. All code is currently from a 3 wheel omni soccer robot.
 
